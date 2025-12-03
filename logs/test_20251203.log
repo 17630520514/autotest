@@ -391,3 +391,63 @@ Call log:
 2025-12-03 17:54:35 - MarPage - INFO - 尝试获取元素文本: button >> nth=3
 2025-12-03 17:54:35 - MarPage - INFO - 成功获取文本: button >> nth=3, 内容: 用药记录
 2025-12-03 17:54:35 - TestMar - INFO - ✓ 断言成功: 用药记录 == 用药记录
+2025-12-03 18:43:59 - LoginPage - INFO - 导航到页面: http://101.200.193.143/
+2025-12-03 18:43:59 - MarPage - INFO - 导航到页面: http://101.200.193.143/
+2025-12-03 18:43:59 - LoginPage - INFO - 成功加载页面: http://101.200.193.143/
+2025-12-03 18:43:59 - LoginPage - INFO - 尝试填充元素: #username, 内容: XinL
+2025-12-03 18:43:59 - MarPage - INFO - 成功加载页面: http://101.200.193.143/
+2025-12-03 18:43:59 - MarPage - INFO - 尝试点击元素: button >> nth=3
+2025-12-03 18:43:59 - LoginPage - INFO - 成功填充元素: #username
+2025-12-03 18:43:59 - LoginPage - INFO - 尝试填充元素: #password, 内容: 17630520514Sxl
+2025-12-03 18:43:59 - LoginPage - INFO - 成功填充元素: #password
+2025-12-03 18:43:59 - LoginPage - INFO - 尝试点击元素: [type = "submit"]
+2025-12-03 18:43:59 - MarPage - INFO - 成功点击元素: button >> nth=3
+2025-12-03 18:43:59 - MarPage - INFO - 尝试获取元素文本: button >> nth=3
+2025-12-03 18:43:59 - LoginPage - INFO - 成功点击元素: [type = "submit"]
+2025-12-03 18:43:59 - LoginPage - INFO - 尝试获取元素文本: [class = "text-sm mt-1 text-green-800"]
+2025-12-03 18:43:59 - MarPage - INFO - 成功获取文本: button >> nth=3, 内容: 用药记录
+2025-12-03 18:43:59 - TestMar - INFO - ✓ 断言成功: 用药记录 == 用药记录
+2025-12-03 18:44:00 - LoginPage - INFO - 成功获取文本: [class = "text-sm mt-1 text-green-800"], 内容: 登录成功
+2025-12-03 18:44:00 - TestLogin - INFO - ✓ 断言成功: 登录成功 == 登录成功
+2025-12-03 18:44:01 - TestLogin - DEBUG - 测试数据: {'username': 'XinL', 'password': '17630520514Sxls', 'expected_error': '用户名或密码错误'}
+2025-12-03 18:44:01 - LoginPage - INFO - 导航到页面: http://101.200.193.143/
+2025-12-03 18:44:01 - LoginPage - INFO - 成功加载页面: http://101.200.193.143/
+2025-12-03 18:44:01 - LoginPage - INFO - 尝试填充元素: #username, 内容: XinL
+2025-12-03 18:44:01 - LoginPage - INFO - 成功填充元素: #username
+2025-12-03 18:44:01 - LoginPage - INFO - 尝试填充元素: #password, 内容: 17630520514Sxls
+2025-12-03 18:44:01 - LoginPage - INFO - 成功填充元素: #password
+2025-12-03 18:44:01 - LoginPage - INFO - 尝试点击元素: [type = "submit"]
+2025-12-03 18:44:01 - LoginPage - INFO - 成功点击元素: [type = "submit"]
+2025-12-03 18:44:01 - LoginPage - INFO - 尝试获取元素文本: [class = "text-sm mt-1 text-red-800"]
+2025-12-03 18:44:02 - LoginPage - INFO - 成功获取文本: [class = "text-sm mt-1 text-red-800"], 内容: 用户名或密码错误
+2025-12-03 18:44:02 - TestLogin - INFO - ✓ 断言成功: '用户名或密码错误' 包含 '用户名或密码错误'
+2025-12-03 18:44:02 - LoginPage - INFO - 导航到页面: http://101.200.193.143/
+2025-12-03 18:44:02 - LoginPage - INFO - 成功加载页面: http://101.200.193.143/
+2025-12-03 18:44:02 - LoginPage - INFO - 尝试填充元素: #username, 内容: XinL
+2025-12-03 18:44:02 - LoginPage - INFO - 成功填充元素: #username
+2025-12-03 18:44:02 - LoginPage - INFO - 尝试填充元素: #password, 内容: 17630520514Sxl
+2025-12-03 18:44:02 - LoginPage - INFO - 成功填充元素: #password
+2025-12-03 18:44:02 - LoginPage - INFO - 尝试点击元素: [type = "submit"]
+2025-12-03 18:44:02 - LoginPage - INFO - 成功点击元素: [type = "submit"]
+2025-12-03 18:44:02 - LoginPage - INFO - 尝试获取元素文本: [class = "text-sm mt-1 text-green-800"]
+2025-12-03 18:44:03 - LoginPage - INFO - 成功获取文本: [class = "text-sm mt-1 text-green-800"], 内容: 登录成功
+2025-12-03 18:44:03 - TestLogin - INFO - ✓ 断言成功: 登录成功 == 登录成功
+2025-12-03 18:44:03 - TestLogin - DEBUG - 测试数据: {'username': 'XinL', 'password': '17630520514Sxls', 'expected_error': '用户名或密码错误'}
+2025-12-03 18:44:03 - LoginPage - INFO - 导航到页面: http://101.200.193.143/
+2025-12-03 18:44:03 - LoginPage - INFO - 成功加载页面: http://101.200.193.143/
+2025-12-03 18:44:03 - LoginPage - INFO - 尝试填充元素: #username, 内容: XinL
+2025-12-03 18:44:03 - LoginPage - INFO - 成功填充元素: #username
+2025-12-03 18:44:03 - LoginPage - INFO - 尝试填充元素: #password, 内容: 17630520514Sxls
+2025-12-03 18:44:03 - LoginPage - INFO - 成功填充元素: #password
+2025-12-03 18:44:03 - LoginPage - INFO - 尝试点击元素: [type = "submit"]
+2025-12-03 18:44:03 - LoginPage - INFO - 成功点击元素: [type = "submit"]
+2025-12-03 18:44:03 - LoginPage - INFO - 尝试获取元素文本: [class = "text-sm mt-1 text-red-800"]
+2025-12-03 18:44:04 - LoginPage - INFO - 成功获取文本: [class = "text-sm mt-1 text-red-800"], 内容: 用户名或密码错误
+2025-12-03 18:44:04 - TestLogin - INFO - ✓ 断言成功: '用户名或密码错误' 包含 '用户名或密码错误'
+2025-12-03 18:44:04 - MarPage - INFO - 导航到页面: http://101.200.193.143/
+2025-12-03 18:44:05 - MarPage - INFO - 成功加载页面: http://101.200.193.143/
+2025-12-03 18:44:05 - MarPage - INFO - 尝试点击元素: button >> nth=3
+2025-12-03 18:44:05 - MarPage - INFO - 成功点击元素: button >> nth=3
+2025-12-03 18:44:05 - MarPage - INFO - 尝试获取元素文本: button >> nth=3
+2025-12-03 18:44:05 - MarPage - INFO - 成功获取文本: button >> nth=3, 内容: 用药记录
+2025-12-03 18:44:05 - TestMar - INFO - ✓ 断言成功: 用药记录 == 用药记录

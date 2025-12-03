@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir -p pages tests config utils)"
+      "Bash(mkdir -p pages tests config utils)",
+      "Bash(source .venv/bin/activate)",
+      "Bash(pip install:*)",
+      "Bash(brew --version:*)",
+      "Bash(brew install:*)"
     ],
     "deny": [],
     "ask": []

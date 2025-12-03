@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page, TimeoutError
 from config.config import TIMEOUT
 from utils.logger import Logger
@@ -11,6 +12,7 @@ class BasePage:
         self.timeout = TIMEOUT
         self.logger = Logger(self.__class__.__name__)
 
+    @allure.step("导航到页面: {url}")
     def navigate(self, url: str):
         """导航到指定URL"""
         try:
@@ -21,6 +23,7 @@ class BasePage:
             self.logger.error(f"导航失败: {url}, 错误: {str(e)}")
             raise
 
+    @allure.step("点击元素: {selector}")
     def click(self, selector: str):
         """点击元素"""
         try:
@@ -34,6 +37,7 @@ class BasePage:
             self.logger.error(f"点击元素失败: {selector}, 错误: {str(e)}")
             raise
 
+    @allure.step("填充元素: {selector}, 内容: {text}")
     def fill(self, selector: str, text: str):
         """填充输入框"""
         try:
@@ -47,6 +51,7 @@ class BasePage:
             self.logger.error(f"填充元素失败: {selector}, 错误: {str(e)}")
             raise
 
+    @allure.step("获取元素文本: {selector}")
     def get_text(self, selector: str) -> str:
         """获取元素文本"""
         try:
@@ -61,6 +66,7 @@ class BasePage:
             self.logger.error(f"获取文本失败: {selector}, 错误: {str(e)}")
             raise
 
+    @allure.step("检查元素可见性: {selector}")
     def is_visible(self, selector: str) -> bool:
         """检查元素是否可见"""
         try:
@@ -74,6 +80,7 @@ class BasePage:
             self.logger.error(f"检查元素可见性失败: {selector}, 错误: {str(e)}")
             return False
 
+    @allure.step("等待元素出现: {selector}")
     def wait_for_selector(self, selector: str):
         """等待元素出现"""
         try:

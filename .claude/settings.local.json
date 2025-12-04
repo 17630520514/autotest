@@ -9,7 +9,8 @@
       "Bash(tree:*)",
       "Bash(find:*)",
       "Bash(python sign_generator.py:*)",
-      "Bash(python3 sign_generator.py:*)"
+      "Bash(python3 sign_generator.py:*)",
+      "Bash(pytest:*)"
     ],
     "deny": [],
     "ask": []

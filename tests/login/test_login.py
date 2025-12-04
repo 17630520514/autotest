@@ -17,7 +17,7 @@ class TestLogin:
     @allure.description("使用有效的用户名和密码进行登录，验证登录成功")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_login_success(self, page: Page):
-        success_data = DataLoader.get_test_data("login_data.yaml", "valid_user")
+        success_data = DataLoader.get_test_data("login/login_data.yaml", "valid_user")
         login_page = LoginPage(page)
         login_page.open()
         login_page.login(success_data["username"], success_data["password"])
@@ -30,7 +30,7 @@ class TestLogin:
     @allure.description("使用无效的用户名和密码进行登录，验证错误提示")
     @allure.severity(allure.severity_level.NORMAL)
     def test_login_invalid_credentials(self, page: Page):
-        invalid_data = DataLoader.get_test_data("login_data.yaml", "invalid_user")
+        invalid_data = DataLoader.get_test_data("login/login_data.yaml", "invalid_user")
         logger.debug(f"测试数据: {invalid_data}")
         login_page = LoginPage(page)
         login_page.open()

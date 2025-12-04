@@ -23,10 +23,13 @@ playwright install
 pytest
 
 # Run specific test file
-pytest tests/test_login.py
+pytest tests/login/test_login.py
 
 # Run specific test method
-pytest tests/test_login.py::TestLogin::test_login_success
+pytest tests/login/test_login.py::TestLogin::test_login_success
+
+# Run all tests in a module
+pytest tests/login/
 
 # Run with different browser
 pytest --browser firefox
@@ -71,15 +74,56 @@ allure open allure-report
 
 ## Architecture
 
+### File Organization
+
+The framework follows a **modular structure** where each feature/module has its own directory containing pages, tests, and test data:
+
+```
+autotest/
+├── pages/                    # Page Objects
+│   ├── base_page.py         # Base class for all pages
+│   ├── login/               # Login module
+│   │   └── login_page.py
+│   └── mar/                 # MAR (Medication) module
+│       └── mar_page.py
+├── tests/                    # Test cases
+│   ├── login/
+│   │   └── test_login.py
+│   └── mar/
+│       └── test_mar.py
+├── test_data/               # Test data (YAML)
+│   ├── login/
+│   │   └── login_data.yaml
+│   └── auth_state.json      # Saved login state (gitignored)
+├── utils/                   # Utilities
+│   ├── assertion.py         # Assertion wrapper with Allure
+│   ├── data_loader.py       # YAML data loader
+│   └── logger.py            # Logging utility
+├── config/
+│   └── config.py           # Configuration
+└── conftest.py             # Pytest fixtures
+
+```
+
+**Organizing New Modules**:
+When adding a new feature module (e.g., "reports"), create:
+- `pages/reports/reports_page.py` - Page object
+- `tests/reports/test_reports.py` - Test cases
+- `test_data/reports/reports_data.yaml` - Test data (if needed)
+
 ### Page Object Model Structure
 
 The framework follows POM pattern with clear separation:
 
 - **BasePage** (`pages/base_page.py`): Base class providing common page operations (navigate, click, fill, get_text, is_visible, wait_for_selector). All page objects inherit from this class. Uses centralized logging and timeout configuration. All methods are decorated with `@allure.step` for report tracking.
 
-- **Page Objects** (`pages/`): Each page class inherits from BasePage and defines page-specific locators and actions. Example: `LoginPage` encapsulates login page elements and login flow.
+- **Page Objects** (`pages/{module}/`): Each page class inherits from BasePage and defines page-specific locators and actions. Organized by module (e.g., `pages/login/login_page.py`, `pages/mar/mar_page.py`). Each page encapsulates elements and actions for a specific page or feature.
 
-- **Test Data** (`test_data/`): YAML files containing test data. Accessed via `DataLoader.get_test_data(file_name, key)` which returns data from `test_data/` directory.
+- **Test Data** (`test_data/`): YAML files containing test data, organized by module. Accessed via `DataLoader.get_test_data(file_path, key)` where `file_path` is relative to `test_data/` directory (e.g., `"login/login_data.yaml"`).
+  ```python
+  # Load data from test_data/login/login_data.yaml
+  data = DataLoader.get_test_data("login/login_data.yaml", "valid_user")
+  ```
 
 - **Configuration** (`config/config.py`): Centralized config for BASE_URL, TIMEOUT, HEADLESS mode, and logging settings.
 
@@ -89,7 +133,15 @@ The framework follows POM pattern with clear separation:
   - `authenticated_page`: 带登录状态的 page fixture，自动加载保存的登录状态
   - `authenticated_state`: Session级别的 fixture，在整个测试会话开始时执行一次登录并保存状态到 `test_data/auth_state.json`
 
-- **Assertion** (`utils/assertion.py`): Assertion wrapper class that integrates with Allure. Provides methods like `assert_equal`, `assert_contains`, `assert_true`, etc. All assertions automatically log to Allure with pass/fail status and detailed information.
+- **Assertion** (`utils/assertion.py`): Assertion wrapper class that integrates with Allure. Provides methods like:
+  - `assert_equal`, `assert_not_equal` - Value comparison
+  - `assert_contains`, `assert_not_contains` - String/collection checks
+  - `assert_true`, `assert_false` - Boolean checks
+  - `assert_is_display`, `assert_not_display` - Element visibility (requires `page` parameter)
+  - `assert_greater`, `assert_less` - Numeric comparison
+  - `assert_in` - List membership
+
+  All assertions automatically log to Allure with pass/fail status and detailed information.
 
 ### Key Patterns
 

@@ -5,7 +5,11 @@
       "Bash(source .venv/bin/activate)",
       "Bash(pip install:*)",
       "Bash(brew --version:*)",
-      "Bash(brew install:*)"
+      "Bash(brew install:*)",
+      "Bash(tree:*)",
+      "Bash(find:*)",
+      "Bash(python sign_generator.py:*)",
+      "Bash(python3 sign_generator.py:*)"
     ],
     "deny": [],
     "ask": []

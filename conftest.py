@@ -38,7 +38,7 @@ def authenticated_state(browser: Browser) -> Path:
         from pages.login.login_page import LoginPage
         from utils.data_loader import DataLoader
 
-        login_data = DataLoader.get_test_data("login_data.yaml", "valid_user")
+        login_data = DataLoader.get_test_data("login/login_data.yaml", "valid_user")
         login_page = LoginPage(page)
         login_page.open()
         login_page.login(login_data["username"], login_data["password"])

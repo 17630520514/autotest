@@ -6,7 +6,7 @@ class MarPage(BasePage):
     """用药记录页面"""
 
     # 定位器
-    MAR_TAB_BUTTON = "button >> nth=3"  # 第4个button（从0开始）
+    MAR_TAB_BUTTON = "button:has-text('用药记录')"  # 第4个button（从0开始）
     # 或者使用更具体的定位方式：
     # MAR_TAB_BUTTON = "button:has-text('用药记录')"  # 根据按钮文本定位
     # MAR_TAB_BUTTON = "//button[contains(text(), '用药记录')]"  # XPath方式

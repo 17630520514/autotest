@@ -68,6 +68,7 @@ test-results/
 # Playwright
 playwright-report/
 trace.zip
+traces/
 
 # Authentication state (contains sensitive login data)
 test_data/auth_state.json

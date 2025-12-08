@@ -22,5 +22,5 @@ HEADLESS = False
 
 # 日志配置
 LOG_LEVEL = "INFO"  # DEBUG, INFO, WARNING, ERROR
-LOG_TO_CONSOLE = True  # 是否输出到控制台
+LOG_TO_CONSOLE = False  # 是否输出到控制台
 LOG_TO_FILE = True  # 是否输出到文件

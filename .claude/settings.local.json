@@ -10,7 +10,11 @@
       "Bash(find:*)",
       "Bash(python sign_generator.py:*)",
       "Bash(python3 sign_generator.py:*)",
-      "Bash(pytest:*)"
+      "Bash(pytest:*)",
+      "Bash(python -c \"import pytest_playwright; help(pytest_playwright)\":*)",
+      "Bash(python3 -m pip show:*)",
+      "WebSearch",
+      "Bash(file:*)"
     ],
     "deny": [],
     "ask": []

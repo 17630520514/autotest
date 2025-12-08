@@ -1,6 +1,6 @@
 import allure
 import pytest
-from playwright.sync_api import Page, Browser
+from playwright.sync_api import Browser
 from pathlib import Path
 from config.config import HEADLESS, BASE_URL
 import time
@@ -14,6 +14,19 @@ STORAGE_STATE_PATH = Path(__file__).parent / "test_data" / "auth_state.json"
 # 可根据实际 token 过期时间调整，默认 1 小时
 AUTH_STATE_EXPIRY = 60 * 60  # 1 hour
 
+# Trace 文件保存路径
+TRACE_DIR = Path(__file__).parent / "test-results"
+
+
+def pytest_addoption(parser):
+    """添加自定义命令行选项"""
+    parser.addoption(
+        "--trace-mode",
+        action="store",
+        default="off",
+        help="启用 Playwright tracing: 'on' 所有测试, 'retain-on-failure' 仅失败测试保留, 'off' 禁用 (默认)"
+    )
+
 
 @pytest.fixture(scope="session")
 def browser_type_launch_args():
@@ -22,6 +35,7 @@ def browser_type_launch_args():
 
 @pytest.fixture(scope="session")
 def browser_context_args():
+    """配置浏览器上下文参数"""
     return {"viewport": {"width": 1920, "height": 1080}}
 
 
@@ -136,35 +150,103 @@ def authenticated_state(browser: Browser) -> Path:
 
 
 @pytest.fixture(scope="function")
-def page(browser: Browser):
+def page(browser: Browser, request):
     """默认的page fixture，不带登录状态"""
-    context = browser.new_context()
+    tracing_option = request.config.getoption("--trace-mode")
+
+    context = browser.new_context(viewport={"width": 1920, "height": 1080})
     page = context.new_page()
+
+    # 启动 tracing
+    if tracing_option in ["on", "retain-on-failure"]:
+        context.tracing.start(screenshots=True, snapshots=True, sources=True)
+
     yield page
+
+    # 停止并保存 tracing
+    if tracing_option in ["on", "retain-on-failure"]:
+        # 获取测试结果
+        test_failed = hasattr(request.node, 'rep_call') and request.node.rep_call.failed
+
+        # 根据策略决定是否保存 trace
+        should_save = (tracing_option == "on") or (tracing_option == "retain-on-failure" and test_failed)
+
+        if should_save:
+            TRACE_DIR.mkdir(parents=True, exist_ok=True)
+            trace_path = TRACE_DIR / f"{request.node.name}.zip"
+            context.tracing.stop(path=str(trace_path))
+
+            # 附加到 Allure 报告
+            if trace_path.exists():
+                allure.attach.file(
+                    str(trace_path),
+                    name="Playwright Trace",
+                    extension="zip"
+                )
+        else:
+            context.tracing.stop()
+
     context.close()
 
 
 @pytest.fixture(scope="function")
-def authenticated_page(browser: Browser, authenticated_state: Path):
+def authenticated_page(browser: Browser, authenticated_state: Path, request):
     """
     带登录状态的page fixture
     使用方法：在测试函数参数中使用 authenticated_page 替代 page
     """
-    context = browser.new_context(storage_state=str(authenticated_state))
+    tracing_option = request.config.getoption("--trace-mode")
+
+    context = browser.new_context(
+        storage_state=str(authenticated_state),
+        viewport={"width": 1920, "height": 1080}
+    )
     page = context.new_page()
+
+    # 启动 tracing
+    if tracing_option in ["on", "retain-on-failure"]:
+        context.tracing.start(screenshots=True, snapshots=True, sources=True)
+
     yield page
+
+    # 停止并保存 tracing
+    if tracing_option in ["on", "retain-on-failure"]:
+        # 获取测试结果
+        test_failed = hasattr(request.node, 'rep_call') and request.node.rep_call.failed
+
+        # 根据策略决定是否保存 trace
+        should_save = (tracing_option == "on") or (tracing_option == "retain-on-failure" and test_failed)
+
+        if should_save:
+            TRACE_DIR.mkdir(parents=True, exist_ok=True)
+            trace_path = TRACE_DIR / f"{request.node.name}.zip"
+            context.tracing.stop(path=str(trace_path))
+
+            # 附加到 Allure 报告
+            if trace_path.exists():
+                allure.attach.file(
+                    str(trace_path),
+                    name="Playwright Trace",
+                    extension="zip"
+                )
+        else:
+            context.tracing.stop()
+
     context.close()
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
-def pytest_runtest_makereport(item, call):
-    """在测试失败时自动截图并附加到 Allure 报告"""
+def pytest_runtest_makereport(item, call):  # noqa: ARG001
+    """在测试失败时自动截图并附加到 Allure 报告，同时保存测试结果用于 tracing 判断"""
     outcome = yield
     report = outcome.get_result()
 
+    # 保存测试结果到 item，供 fixture 使用
+    setattr(item, f"rep_{report.when}", report)
+
     if report.when == "call" and report.failed:
-        # 获取页面对象
-        page = item.funcargs.get("page")
+        # 获取页面对象（支持 page 和 authenticated_page）
+        page = item.funcargs.get("page") or item.funcargs.get("authenticated_page")
         if page:
             try:
                 # 截图

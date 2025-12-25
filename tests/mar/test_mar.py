@@ -1,7 +1,7 @@
 import allure
 import pytest
 from playwright.sync_api import Page
-from pages.mar.mar_page import MarPage
+from pages.modules.mar.mar_page import MarPage
 from utils.data_loader import DataLoader
 from utils.logger import Logger
 from utils.assertion import Assertion

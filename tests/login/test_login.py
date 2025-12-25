@@ -1,7 +1,7 @@
 import allure
 import pytest
 from playwright.sync_api import Page
-from pages.login.login_page import LoginPage
+from pages.common.login.login_page import LoginPage
 from utils.data_loader import DataLoader
 from utils.logger import Logger
 from utils.assertion import Assertion

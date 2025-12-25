@@ -38,9 +38,14 @@ allure-report/
 logs/
 *.log
 
-# IDE - VSCode
-.vscode/
+# IDE - VSCode / Cursor
+# Allow team-shared configs but exclude personal settings
+.vscode/*.local.*
+.vscode/.ropeproject/
 *.code-workspace
+
+# Claude Code
+.claude/settings.local.json
 
 # IDE - PyCharm / IntelliJ
 .idea/

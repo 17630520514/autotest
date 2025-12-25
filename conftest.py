@@ -81,7 +81,7 @@ def _perform_login(browser: Browser) -> Path:
 
     try:
         # 执行登录流程
-        from pages.login.login_page import LoginPage
+        from pages.common.login.login_page import LoginPage
         from utils.data_loader import DataLoader
 
         login_data = DataLoader.get_test_data("login/login_data.yaml", "valid_user")

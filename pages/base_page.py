@@ -93,3 +93,46 @@ class BasePage:
         except Exception as e:
             self.logger.error(f"等待元素失败: {selector}, 错误: {str(e)}")
             raise
+
+    @allure.step("点击角色元素: {role} - {name}")
+    def click_by_role(self, role: str, name: str):
+        """通过角色和名称点击元素 (基于可访问性)"""
+        try:
+            self.logger.info(f"尝试点击 {role}: {name}")
+            self.page.get_by_role(role, name=name).click(timeout=self.timeout)
+            self.logger.info(f"成功点击 {role}: {name}")
+        except TimeoutError:
+            self.logger.error(f"元素未找到或不可点击: {role} - {name}")
+            raise
+        except Exception as e:
+            self.logger.error(f"点击元素失败: {role} - {name}, 错误: {str(e)}")
+            raise
+
+    @allure.step("填充角色元素: {role} - {name}, 内容: {text}")
+    def fill_by_role(self, role: str, name: str, text: str):
+        """通过角色和名称填充输入框 (基于可访问性)"""
+        try:
+            self.logger.info(f"尝试填充 {role}: {name}, 内容: {text}")
+            self.page.get_by_role(role, name=name).fill(text, timeout=self.timeout)
+            self.logger.info(f"成功填充 {role}: {name}")
+        except TimeoutError:
+            self.logger.error(f"输入框未找到: {role} - {name}")
+            raise
+        except Exception as e:
+            self.logger.error(f"填充元素失败: {role} - {name}, 错误: {str(e)}")
+            raise
+
+    @allure.step("获取角色元素文本: {role} - {name}")
+    def get_text_by_role(self, role: str, name: str) -> str:
+        """通过角色和名称获取元素文本 (基于可访问性)"""
+        try:
+            self.logger.info(f"尝试获取元素文本: {role} - {name}")
+            text = self.page.get_by_role(role, name=name).text_content(timeout=self.timeout)
+            self.logger.info(f"成功获取文本: {role} - {name}, 内容: {text}")
+            return text
+        except TimeoutError:
+            self.logger.error(f"元素未找到,无法获取文本: {role} - {name}")
+            raise
+        except Exception as e:
+            self.logger.error(f"获取文本失败: {role} - {name}, 错误: {str(e)}")
+            raise

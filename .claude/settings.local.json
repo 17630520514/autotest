@@ -14,7 +14,8 @@
       "Bash(python -c \"import pytest_playwright; help(pytest_playwright)\":*)",
       "Bash(python3 -m pip show:*)",
       "WebSearch",
-      "Bash(file:*)"
+      "Bash(file:*)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []

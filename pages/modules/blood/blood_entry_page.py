@@ -6,11 +6,11 @@ from typing import Optional
 class BloodEntryPage(BasePage):
     """血常规录入页面对象"""
 
-    # 使用 get_by_role 的元素定义 (role, name)
+    # ========== Role 定位器（元组格式）==========
     BLOOD_ENTRY_BUTTON = ("button", "血常规录入")
     SUBMIT_BUTTON = ("button", "开始AI智能分析")
 
-    # 使用 CSS 选择器的元素定义
+    # ========== CSS 定位器（字符串格式）==========
     PLT_INPUT = "#plt"
     WBC_INPUT = "#wbc"
     RBC_INPUT = "#rbc"
@@ -24,11 +24,12 @@ class BloodEntryPage(BasePage):
         self.navigate(f"{BASE_URL}")
 
     def click_blood_entry_button(self):
-        """点击血常规录入按钮"""
-        self.click_by_role(*self.BLOOD_ENTRY_BUTTON)
+        """点击血常规录入按钮 - 使用 Role 定位器"""
+        # 新方式：直接传递元组，不需要 * 解包
+        self.click(self.BLOOD_ENTRY_BUTTON)
 
     def fill_blood_data(self, plt: str = "", wbc: str = "", rbc: str = "", hgb: str = "", test_date: Optional[str] = None):
-        """填充血常规数据
+        """填充血常规数据 - 使用 CSS 定位器
 
         Args:
             plt: 血小板计数
@@ -37,6 +38,7 @@ class BloodEntryPage(BasePage):
             hgb: 血红蛋白
             test_date: 检测日期 (可选), 格式: YYYY-MM-DD
         """
+        # CSS 定位器也直接传递，方法会自动识别
         if plt:
             self.fill(self.PLT_INPUT, plt)
         if wbc:
@@ -49,8 +51,8 @@ class BloodEntryPage(BasePage):
             self.fill(self.TEST_DATE_INPUT, test_date)
 
     def submit_blood_data(self):
-        """提交血常规数据"""
-        self.click_by_role(*self.SUBMIT_BUTTON)
+        """提交血常规数据 - 使用 Role 定位器"""
+        self.click(self.SUBMIT_BUTTON)
 
     def submit_blood_entry(self, plt: str = "", wbc: str = "", rbc: str = "", hgb: str = "", test_date: Optional[str] = None):
         """完整流程：点击录入按钮 -> 填充数据 -> 提交
@@ -67,19 +69,19 @@ class BloodEntryPage(BasePage):
         self.submit_blood_data()
 
     def get_error_message(self) -> str:
-        """获取错误消息文本"""
+        """获取错误消息文本 - 使用 CSS 定位器"""
         return self.get_text(self.ERROR_MESSAGE)
 
     def get_success_message(self) -> str:
-        """获取成功消息文本"""
+        """获取成功消息文本 - 使用 CSS 定位器"""
         return self.get_text(self.SUCCESS_MESSAGE)
 
     def is_error_message_visible(self) -> bool:
-        """检查错误消息是否可见"""
+        """检查错误消息是否可见 - 使用 CSS 定位器"""
         return self.is_visible(self.ERROR_MESSAGE)
 
     def is_success_message_visible(self) -> bool:
-        """检查成功消息是否可见"""
+        """检查成功消息是否可见 - 使用 CSS 定位器"""
         return self.is_visible(self.SUCCESS_MESSAGE)
-    
-    
+
+

@@ -5,6 +5,7 @@ from pathlib import Path
 from config.config import HEADLESS, BASE_URL
 import time
 import os
+from datetime import datetime
 
 
 # Storage state 文件路径
@@ -173,16 +174,14 @@ def page(browser: Browser, request):
 
         if should_save:
             TRACE_DIR.mkdir(parents=True, exist_ok=True)
-            trace_path = TRACE_DIR / f"{request.node.name}.zip"
+            # 生成文件名：测试方法名（去除参数）+ 时间戳
+            test_name = request.node.name.split('[')[0]  # 去除 [chromium] 等参数
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            trace_path = TRACE_DIR / f"{test_name}_{timestamp}.zip"
             context.tracing.stop(path=str(trace_path))
 
-            # 附加到 Allure 报告
-            if trace_path.exists():
-                allure.attach.file(
-                    str(trace_path),
-                    name="Playwright Trace",
-                    extension="zip"
-                )
+            # 将 trace 路径保存到 request.node，供 hook 使用
+            request.node._trace_path = trace_path
         else:
             context.tracing.stop()
 
@@ -219,16 +218,14 @@ def authenticated_page(browser: Browser, authenticated_state: Path, request):
 
         if should_save:
             TRACE_DIR.mkdir(parents=True, exist_ok=True)
-            trace_path = TRACE_DIR / f"{request.node.name}.zip"
+            # 生成文件名：测试方法名（去除参数）+ 时间戳
+            test_name = request.node.name.split('[')[0]  # 去除 [chromium] 等参数
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            trace_path = TRACE_DIR / f"{test_name}_{timestamp}.zip"
             context.tracing.stop(path=str(trace_path))
 
-            # 附加到 Allure 报告
-            if trace_path.exists():
-                allure.attach.file(
-                    str(trace_path),
-                    name="Playwright Trace",
-                    extension="zip"
-                )
+            # 将 trace 路径保存到 request.node，供 hook 使用
+            request.node._trace_path = trace_path
         else:
             context.tracing.stop()
 
@@ -265,3 +262,20 @@ def pytest_runtest_makereport(item, call):  # noqa: ARG001
                 )
             except Exception as e:
                 print(f"截图失败: {e}")
+
+    # 在 teardown 完成后附加 trace（如果存在）
+    if report.when == "teardown" and hasattr(item, '_trace_path'):
+        trace_path = item._trace_path
+        if trace_path.exists():
+            try:
+                # 使用文件名（去除 .zip 扩展名）作为附件名称
+                trace_name = trace_path.stem  # 例如：test_click_mar_tab_20251230_194328
+                with open(trace_path, 'rb') as f:
+                    allure.attach(
+                        f.read(),
+                        name=f"Trace_{trace_name}",
+                        attachment_type="application/zip",
+                        extension="zip"
+                    )
+            except Exception as e:
+                print(f"附加 trace 失败: {e}")

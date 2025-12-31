@@ -95,8 +95,10 @@ class BasePage:
             self._get_locator(locator).click(timeout=self.timeout)
             self.logger.info(f"成功点击元素: {loc_desc}")
         except TimeoutError:
-            self.logger.error(f"元素未找到或不可点击: {loc_desc}")
-            raise
+            error_msg = f"元素未找到或不可点击: {loc_desc}"
+            self.logger.error(error_msg)
+            # 转换为 AssertionError，让 Allure 显示为 Failed (红色) 而非 Broken (黄色)
+            raise AssertionError(error_msg)
         except Exception as e:
             self.logger.error(f"点击元素失败: {loc_desc}, 错误: {str(e)}")
             raise
@@ -118,8 +120,10 @@ class BasePage:
             self._get_locator(locator).fill(text, timeout=self.timeout)
             self.logger.info(f"成功填充元素: {loc_desc}")
         except TimeoutError:
-            self.logger.error(f"输入框未找到: {loc_desc}")
-            raise
+            error_msg = f"输入框未找到: {loc_desc}"
+            self.logger.error(error_msg)
+            # 转换为 AssertionError，让 Allure 显示为 Failed (红色)
+            raise AssertionError(error_msg)
         except Exception as e:
             self.logger.error(f"填充元素失败: {loc_desc}, 错误: {str(e)}")
             raise
@@ -144,8 +148,10 @@ class BasePage:
             self.logger.info(f"成功获取文本: {loc_desc}, 内容: {text}")
             return text
         except TimeoutError:
-            self.logger.error(f"元素未找到,无法获取文本: {loc_desc}")
-            raise
+            error_msg = f"元素未找到,无法获取文本: {loc_desc}"
+            self.logger.error(error_msg)
+            # 转换为 AssertionError，让 Allure 显示为 Failed (红色)
+            raise AssertionError(error_msg)
         except Exception as e:
             self.logger.error(f"获取文本失败: {loc_desc}, 错误: {str(e)}")
             raise
@@ -191,8 +197,10 @@ class BasePage:
             self._get_locator(locator).wait_for(state="visible", timeout=self.timeout)
             self.logger.info(f"元素已出现: {loc_desc}")
         except TimeoutError:
-            self.logger.error(f"等待超时,元素未出现: {loc_desc}")
-            raise
+            error_msg = f"等待超时,元素未出现: {loc_desc}"
+            self.logger.error(error_msg)
+            # 转换为 AssertionError，让 Allure 显示为 Failed (红色)
+            raise AssertionError(error_msg)
         except Exception as e:
             self.logger.error(f"等待元素失败: {loc_desc}, 错误: {str(e)}")
             raise
@@ -282,8 +290,10 @@ class BasePage:
             self._get_locator(locator).check(timeout=self.timeout)
             self.logger.info(f"成功选中元素: {loc_desc}")
         except TimeoutError:
-            self.logger.error(f"元素未找到: {loc_desc}")
-            raise
+            error_msg = f"元素未找到: {loc_desc}"
+            self.logger.error(error_msg)
+            # 转换为 AssertionError，让 Allure 显示为 Failed (红色)
+            raise AssertionError(error_msg)
         except Exception as e:
             self.logger.error(f"选中元素失败: {loc_desc}, 错误: {str(e)}")
             raise
@@ -304,8 +314,10 @@ class BasePage:
             self._get_locator(locator).uncheck(timeout=self.timeout)
             self.logger.info(f"成功取消选中元素: {loc_desc}")
         except TimeoutError:
-            self.logger.error(f"元素未找到: {loc_desc}")
-            raise
+            error_msg = f"元素未找到: {loc_desc}"
+            self.logger.error(error_msg)
+            # 转换为 AssertionError，让 Allure 显示为 Failed (红色)
+            raise AssertionError(error_msg)
         except Exception as e:
             self.logger.error(f"取消选中元素失败: {loc_desc}, 错误: {str(e)}")
             raise
